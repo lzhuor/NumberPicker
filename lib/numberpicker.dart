@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:infinite_listview/infinite_listview.dart';
 
 /// Created by Marcin Szałek
@@ -27,6 +28,7 @@ class NumberPicker extends StatelessWidget {
     @required this.maxValue,
     @required this.onChanged,
     this.textMapper,
+    this.haptics = false,
     this.itemExtent = kDefaultItemExtent,
     this.listViewHeight = kDefaultListViewCrossAxisSize,
     this.numberToDisplay = 5,
@@ -61,6 +63,7 @@ class NumberPicker extends StatelessWidget {
     @required this.maxValue,
     @required this.onChanged,
     this.textMapper,
+    this.haptics = false,
     this.itemExtent = kDefaultItemExtent,
     this.listViewWidth = kDefaultListViewCrossAxisSize,
     this.numberToDisplay = 5,
@@ -102,6 +105,7 @@ class NumberPicker extends StatelessWidget {
     @required this.maxValue,
     @required this.onChanged,
     this.textMapper,
+    this.haptics = false,
     this.decimalPlaces = 1,
     this.itemExtent = kDefaultItemExtent,
     this.listViewWidth = kDefaultListViewCrossAxisSize,
@@ -199,6 +203,9 @@ class NumberPicker extends StatelessWidget {
 
   ///Amount of items
   final int integerItemCount;
+
+  ///Whether to trigger haptic pulses or not
+  final bool haptics;
 
   //
   //----------------------------- PUBLIC ------------------------------
@@ -475,6 +482,11 @@ class NumberPicker extends StatelessWidget {
             newValue = ((intValueInTheMiddle + decimalPart).toDouble());
           }
         }
+
+        if(haptics) {
+          HapticFeedback.selectionClick();
+        }
+
         onChanged(newValue);
       }
     }
@@ -500,6 +512,11 @@ class NumberPicker extends StatelessWidget {
           decimalValueInTheMiddle != selectedDecimalValue) {
         double decimalPart = _toDecimal(decimalValueInTheMiddle);
         double newValue = ((selectedIntValue + decimalPart).toDouble());
+
+        if(haptics) {
+          HapticFeedback.selectionClick();
+        }
+
         onChanged(newValue);
       }
     }
